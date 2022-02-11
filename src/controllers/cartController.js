@@ -53,18 +53,18 @@ export async function getCart(req, res) {
     let productsInfo = [];
     const { user } = res.locals;
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
-    for (let product of userCart.cart) {
-      const info = await db
-        .collection("products")
-        .findOne({ _id: product.productId });
-      productsInfo.push({
-        name: info.name,
-        image: info.image,
-        price: info.price,
-      });
-    }
+    // for (let product of userCart.cart) {
+    //   const info = await db
+    //     .collection("products")
+    //     .findOne({ _id: product.productId });
+    //   productsInfo.push({
+    //     name: info.name,
+    //     image: info.image,
+    //     price: info.price,
+    //   });
+    // }
 
-    res.status(200).send(productsInfo);
+    res.status(200).send("cheguei aqui");
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
