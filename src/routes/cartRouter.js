@@ -5,7 +5,6 @@ import cartSchema from '../schemas/cartSchema.js';
 import validaTokenMiddleware from '../middlewares/validaTokenMiddleware.js';
 
 const cartRouter = Router();
-// cartRouter.post("/cart", validSchema(cartSchema), validaTokenMiddleware, postItemOnCart);
-cartRouter.post("/cart", validSchema(cartSchema), postItemOnCart);
+cartRouter.post("/cart", validSchema(cartSchema), validaTokenMiddleware, postItemOnCart);
 
 export default cartRouter;
