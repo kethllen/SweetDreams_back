@@ -46,7 +46,9 @@ export async function signUp(req, res) {
   const passwordHash = bcrypt.hashSync(body.password, 10);
 
   await db.collection("users").insertOne({ ...body, password: passwordHash });
+
   const user = await db.collection("users").findOne({ email: body.email });
+  await db.collection("cart").insertOne({ id_user: user._id, cart: [] });
   const token = uuid();
 
   const session = await db
