@@ -53,11 +53,14 @@ export async function getCart(req, res) {
     let productsInfo = [];
     const { user } = res.locals;
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
-    // for (let product of userCart.cart) {
-    //   const info = await db
-    //     .collection("products")
-    //     .findOne({ _id: product.productId });
-    //   productsInfo.push({
+    console.log(userCart);
+    for (let product of userCart.cart) {
+      const info = await db
+        .collection("products")
+        .findOne({ _id: new ObjectId(product.productId) });
+      console.log(info);
+    }
+    //  productsInfo.push({
     //     name: info.name,
     //     image: info.image,
     //     price: info.price,
