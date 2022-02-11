@@ -3,8 +3,8 @@ import { ObjectId } from "mongodb";
 
 export default async function validateToken(req, res, next) {
   try {
-    const { Authorization } = req.headers;
-    const token = Authorization?.replace("Bearer ", "");
+    const { authorization } = req.headers;
+    const token = authorization?.replace("Bearer ", "");
     if (!token) {
       return res.status(401).send(Authorization);
     }
