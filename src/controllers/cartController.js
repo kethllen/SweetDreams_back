@@ -58,16 +58,15 @@ export async function getCart(req, res) {
       const info = await db
         .collection("products")
         .findOne({ _id: new ObjectId(product.productId) });
-      console.log(info);
+      productsInfo.push({
+        name: info.name,
+        image: info.image,
+        price: info.price,
+      });
     }
-    //  productsInfo.push({
-    //     name: info.name,
-    //     image: info.image,
-    //     price: info.price,
-    //   });
-    // }
+    console.log(productsInfo);
 
-    res.status(200).send("cheguei aqui");
+    res.status(200).send(productsInfo);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
