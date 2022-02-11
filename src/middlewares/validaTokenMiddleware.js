@@ -1,12 +1,12 @@
 import db from "../db.js";
 import { ObjectId } from "mongodb";
 
-export default async function validateToken(req, res, next) {
+export default async function validaTokenMiddleware(req, res, next) {
   try {
     const { authorization } = req.headers;
     const token = authorization?.replace("Bearer ", "");
     if (!token) {
-      return res.status(401).send(authorization);
+      return res.status(401).send(req);
     }
 
     const session = await db.collection("sessions").findOne({ token });
