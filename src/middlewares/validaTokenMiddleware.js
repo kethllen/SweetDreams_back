@@ -5,9 +5,8 @@ export default async function validateToken(req, res, next) {
   try {
     const { Authorization } = req.headers;
     const token = Authorization?.replace("Bearer ", "");
-    console.log(token);
     if (!token) {
-      return res.status(401).send({ message: "token vazio" });
+      return res.status(401).send(Authorization);
     }
 
     const session = await db.collection("sessions").findOne({ token });
