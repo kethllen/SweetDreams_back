@@ -16,5 +16,5 @@ cartRouter.post(
   postItemOnCart
 );
 cartRouter.get("/cart", validaTokenMiddleware, getCart);
-cartRouter.get("/del", deleteCollection);
+cartRouter.post("/del", deleteCollection);
 export default cartRouter;
