@@ -58,15 +58,13 @@ export async function getCart(req, res) {
       const info = await db
         .collection("products")
         .findOne({ _id: new ObjectId(product.productId) });
+      const aux = info.price.replace(",", ".");
       productsInfo.push({
         name: info.name,
         image: info.image,
         price: info.price,
         quantity: product.quantity,
-        subtotal:
-          !product.quantity == "1"
-            ? (parseInt(product.quantity) * parseFloat(info.price)).toFixed(2)
-            : info.price,
+        subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(2),
       });
     }
     console.log(productsInfo);
