@@ -63,9 +63,10 @@ export async function getCart(req, res) {
         image: info.image,
         price: info.price,
         quantity: product.quantity,
-        subtotal: (parseInt(product.quantity) * parseFloat(info.price)).toFixed(
-          2
-        ),
+        subtotal:
+          !product.quantity == "1"
+            ? (parseInt(product.quantity) * parseFloat(info.price)).toFixed(2)
+            : info.price,
       });
     }
     console.log(productsInfo);
