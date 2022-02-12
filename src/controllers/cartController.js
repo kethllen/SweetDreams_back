@@ -62,7 +62,10 @@ export async function getCart(req, res) {
         name: info.name,
         image: info.image,
         price: info.price,
-        quantity: info.quantity,
+        quantity: product.quantity,
+        subtotal: (parseInt(product.quantity) * parseFloat(info.price)).toFixed(
+          2
+        ),
       });
     }
     console.log(productsInfo);
