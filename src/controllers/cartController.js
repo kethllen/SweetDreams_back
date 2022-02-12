@@ -62,6 +62,7 @@ export async function getCart(req, res) {
         name: info.name,
         image: info.image,
         price: info.price,
+        quantity: info.quantity,
       });
     }
     console.log(productsInfo);
@@ -71,4 +72,10 @@ export async function getCart(req, res) {
     console.log(error);
     res.sendStatus(500);
   }
+}
+
+export async function deleteCollection(req, res) {
+  const { collection } = req.body;
+  await db.collection(collection).deleteMany({});
+  res.sendStatus(200);
 }

@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { postItemOnCart, getCart } from "../controllers/cartController.js";
+import {
+  postItemOnCart,
+  getCart,
+  deleteCollection,
+} from "../controllers/cartController.js";
 import validSchema from "../middlewares/validSchema.js";
 import cartSchema from "../schemas/cartSchema.js";
 import validaTokenMiddleware from "../middlewares/validaTokenMiddleware.js";
@@ -12,4 +16,5 @@ cartRouter.post(
   postItemOnCart
 );
 cartRouter.get("/cart", validaTokenMiddleware, getCart);
+cartRouter.get("/del", deleteCollection);
 export default cartRouter;
