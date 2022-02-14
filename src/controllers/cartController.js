@@ -91,26 +91,21 @@ export async function updatedCart(req, res) {
     const products = req.body;
     const { user } = res.locals;
     console.log(products);
-    let cart = [
-      {
-        productId,
-        quantity,
-      },
-    ];
+    let carrinho = [{}];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
     if (userCart) {
       if (products.cart.quantity == 0 || products.cart.quantity == "0") {
-        cart = userCart.cart.filter((product) => {
+        carrinho = userCart.cart.filter((product) => {
           if (product.productId !== new ObjectId(products.cart.productId))
             return product;
         });
       } else {
-        cart = userCart.cart.map((product) => {
+        carrinho = userCart.cart.map((product) => {
           if (product.productId == new ObjectId(products.cart.productId))
             return (product.quantity = products.cart.quantity);
         });
       }
-      console.log("oi sou o cart ", cart);
+      console.log("oi sou o cart ", carrinho);
       await db.collection("cart").updateOne(
         {
           _id: new ObjectId(user._id),
