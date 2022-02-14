@@ -6,7 +6,7 @@ export default async function validaTokenMiddleware(req, res, next) {
     const { authorization } = req.headers;
     const token = authorization?.replace("Bearer ", "");
     if (!token) {
-      return res.status(401).send(req);
+      return res.status(401).send("nao tenho token");
     }
 
     const session = await db.collection("sessions").findOne({ token });

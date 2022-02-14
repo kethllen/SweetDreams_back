@@ -56,11 +56,15 @@ export async function getCart(req, res) {
     for (let product of userCart.cart) {
       const info = await db
         .collection("products")
-        .findOne({ _id: product.productId });
+        .findOne({ _id: new ObjectId(product.productId) });
+      const aux = info.price.replace(",", ".");
       productsInfo.push({
+        productId: info._id,
         name: info.name,
         image: info.image,
         price: info.price,
+        quantity: product.quantity,
+        subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(2),
       });
     }
 
@@ -69,4 +73,24 @@ export async function getCart(req, res) {
     console.log(error);
     res.sendStatus(500);
   }
+}
+
+export async function deleteCollection(req, res) {
+  const { collection } = req.body;
+  await db.collection(collection).deleteMany({});
+  res.sendStatus(200);
+}
+
+export async function updatedCart(req, res) {
+  const products = req.body;
+  const { user } = res.locals;
+  let productsUpdate = products.filter((product) => {
+    if (product.quantity !== 0 || product.quantity !== "0") return product;
+  });
+  await db.collection("cart").updateOne(
+    {
+      _id: user._id,
+    },
+    { $set: productsUpdate }
+  );
 }
