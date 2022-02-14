@@ -53,22 +53,23 @@ export async function getCart(req, res) {
     let productsInfo = [];
     const { user } = res.locals;
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
-    for (let product of userCart.cart) {
-      const info = await db
-        .collection("products")
-        .findOne({ _id: new ObjectId(product.productId) });
-      const aux = info.price.replace(",", ".");
-      productsInfo.push({
-        productId: info._id,
-        name: info.name,
-        image: info.image,
-        price: info.price,
-        quantity: product.quantity,
-        subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(2),
-      });
+    if (userCart?.cart) {
+      for (let product of userCart.cart) {
+        const info = await db
+          .collection("products")
+          .findOne({ _id: new ObjectId(product.productId) });
+        const aux = info.price.replace(",", ".");
+        productsInfo.push({
+          productId: info._id,
+          name: info.name,
+          image: info.image,
+          price: info.price,
+          quantity: product.quantity,
+          subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(2),
+        });
+      }
     }
-
-    res.status(200).send(productsInfo);
+    return res.status(200).send(productsInfo);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -90,7 +91,7 @@ export async function updatedCart(req, res) {
     });
     await db.collection("cart").updateOne(
       {
-        _id: user._id,
+        _id: new ObjectId(user._id),
       },
       { $set: productsUpdate }
     );
