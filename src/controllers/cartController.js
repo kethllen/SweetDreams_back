@@ -97,7 +97,7 @@ export async function updatedCart(req, res) {
       console.log("eu sou o carrinho atual ", userCart.cart);
       if (cart.quantity == 0 || cart.quantity == "0") {
         console.log("entrei no if");
-        const items = userCart.cart.toArray();
+        const items = userCart.cart;
         for (let item of items) {
           if (item.productId !== new ObjectId(cart.productId)) {
             carrinho.push(item);
