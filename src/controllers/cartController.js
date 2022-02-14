@@ -95,7 +95,7 @@ export async function updatedCart(req, res) {
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
     if (products.cart.quantity == 0 || products.cart.quantity == "0") {
       cart = userCart.cart.filter((product) => {
-        if (product.productId !== new ObjectId(product.cart.productId))
+        if (product.productId !== new ObjectId(products.cart.productId))
           return product;
       });
     } else {
