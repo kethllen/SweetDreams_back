@@ -62,7 +62,9 @@ export async function getCart(req, res) {
         const info = await db
           .collection("products")
           .findOne({ _id: new ObjectId(product.productId) });
+        console.log("to aqui");
         const aux = info.price.replace(",", ".");
+        console.log("to aqui agora");
         productsInfo.push({
           productId: info._id,
           name: info.name,
@@ -71,6 +73,7 @@ export async function getCart(req, res) {
           quantity: product.quantity,
           subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(2),
         });
+        console.log("cheguei ao fim");
       }
     }
     return res.status(200).send(productsInfo);
