@@ -9,12 +9,6 @@ export async function postItemOnCart(req, res) {
     let userCart = await db
       .collection("cart")
       .findOne({ id_user: new ObjectId(user._id) });
-    if (!userCart) {
-      await db.collection("cart").insertOne({ id_user: user._id, cart: [] });
-      userCart = await db
-        .collection("cart")
-        .findOne({ id_user: new ObjectId(user._id) });
-    }
     let alreadyOnCart = false;
     for (let i = 0; i < userCart.cart.length; i++) {
       if (userCart.cart[i].productId === productId) {
@@ -60,22 +54,27 @@ export async function getCart(req, res) {
     if (userCart?.cart) {
       console.log(userCart.cart);
       for (let product of userCart.cart) {
-        const info = await db
-          .collection("products")
-          .findOne({ _id: new ObjectId(product.productId) });
-        console.log(info);
-        if (info) {
-          const aux = info.price.replace(",", ".");
-          console.log("to aqui agora");
-          productsInfo.push({
-            productId: info._id,
-            name: info.name,
-            image: info.image,
-            price: info.price,
-            quantity: product.quantity,
-            subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(2),
-          });
-          console.log("cheguei ao fim");
+        if (!product.hasOwnProperty("productId")) {
+        } else {
+          const info = await db
+            .collection("products")
+            .findOne({ _id: new ObjectId(product.productId) });
+          console.log(info);
+          if (info) {
+            const aux = info.price.replace(",", ".");
+            console.log("to aqui agora");
+            productsInfo.push({
+              productId: info._id,
+              name: info.name,
+              image: info.image,
+              price: info.price,
+              quantity: product.quantity,
+              subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(
+                2
+              ),
+            });
+            console.log("cheguei ao fim");
+          }
         }
       }
     }
