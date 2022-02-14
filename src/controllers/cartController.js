@@ -96,6 +96,7 @@ export async function updatedCart(req, res) {
     if (userCart) {
       console.log("eu sou o carrinho atual ", userCart.cart);
       if (cart.quantity == 0 || cart.quantity == "0") {
+        console.log("entrei no if");
         carrinho = userCart.cart.filter((product) => {
           if (product.productId !== new ObjectId(cart.productId))
             return product;
