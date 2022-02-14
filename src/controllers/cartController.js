@@ -62,7 +62,7 @@ export async function getCart(req, res) {
         const info = await db
           .collection("products")
           .findOne({ _id: new ObjectId(product.productId) });
-        console.log("to aqui");
+        console.log(info);
         const aux = info.price.replace(",", ".");
         console.log("to aqui agora");
         productsInfo.push({
