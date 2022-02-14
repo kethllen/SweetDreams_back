@@ -93,24 +93,28 @@ export async function updatedCart(req, res) {
     console.log(products);
     let cart = [];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
-    if (products.cart.quantity == 0 || products.cart.quantity == "0") {
-      cart = userCart.cart.filter((product) => {
-        if (product.productId !== new ObjectId(products.cart.productId))
-          return product;
-      });
+    if (userCart) {
+      if (products.cart.quantity == 0 || products.cart.quantity == "0") {
+        cart = userCart.cart.filter((product) => {
+          if (product.productId !== new ObjectId(products.cart.productId))
+            return product;
+        });
+      } else {
+        cart = userCart.cart.map((product) => {
+          if (product.productId == new ObjectId(products.cart.productId))
+            return (product.quantity = products.cart.quantity);
+        });
+      }
+      await db.collection("cart").updateOne(
+        {
+          _id: new ObjectId(user._id),
+        },
+        { $set: cart }
+      );
+      return res.sendStatus(200);
     } else {
-      cart = userCart.cart.map((product) => {
-        if (product.productId == new ObjectId(products.cart.productId))
-          return (product.quantity = products.cart.quantity);
-      });
+      res.sendStatus(423).send({ message: "carrinho nao encontrado" });
     }
-    await db.collection("cart").updateOne(
-      {
-        _id: new ObjectId(user._id),
-      },
-      { $set: cart }
-    );
-    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
