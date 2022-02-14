@@ -58,10 +58,11 @@ export async function getCart(req, res) {
     const { user } = res.locals;
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
     if (userCart?.cart) {
+      console.log(userCart.cart);
       for (let product of userCart.cart) {
         const info = await db
           .collection("products")
-          .findOne({ _id: new ObjectId(product.productId) });
+          .findOne({ _id: product.productId });
         console.log(info);
         const aux = info.price.replace(",", ".");
         console.log("to aqui agora");
