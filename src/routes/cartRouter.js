@@ -3,6 +3,7 @@ import {
   postItemOnCart,
   getCart,
   deleteCollection,
+  updatedCart,
 } from "../controllers/cartController.js";
 import validSchema from "../middlewares/validSchema.js";
 import cartSchema from "../schemas/cartSchema.js";
@@ -16,5 +17,6 @@ cartRouter.post(
   postItemOnCart
 );
 cartRouter.get("/cart", validaTokenMiddleware, getCart);
+cartRouter.update("/cart", validaTokenMiddleware, updatedCart);
 cartRouter.post("/del", deleteCollection);
 export default cartRouter;
