@@ -98,19 +98,15 @@ export async function updatedCart(req, res) {
     const { user } = res.locals;
     let carrinho = [{}];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
-    //console.log(userCart);
+
     if (userCart) {
-      //  console.log("eu sou o carrinho atual ", userCart.cart);
       if (cart.quantity == 0) {
-        console.log("quantidade igual a zero");
         const items = userCart.cart;
         for (let item of items) {
           if (item.productId !== cart.productId) {
-            console.log(item);
             carrinho.push(item);
           }
         }
-        console.log("Eu sou o carrinho atualizado", carrinho);
         await db.collection("cart").updateOne(
           {
             id_user: new ObjectId(user._id),
