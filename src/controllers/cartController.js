@@ -88,21 +88,21 @@ export async function deleteCollection(req, res) {
 
 export async function updatedCart(req, res) {
   try {
-    const products = req.body;
+    const { cart } = req.body;
     const { user } = res.locals;
     console.log(products);
     let carrinho = [{}];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
-    if (userCart) {
-      if (products.cart.quantity == 0 || products.cart.quantity == "0") {
+    if (userCart?.cart?.length !== 0) {
+      if (cart.quantity == 0 || cart.quantity == "0") {
         carrinho = userCart.cart.filter((product) => {
-          if (product.productId !== new ObjectId(products.cart.productId))
+          if (product.productId !== new ObjectId(cart.productId))
             return product;
         });
       } else {
         carrinho = userCart.cart.map((product) => {
-          if (product.productId == new ObjectId(products.cart.productId))
-            return (product.quantity = products.cart.quantity);
+          if (product.productId == new ObjectId(cart.productId))
+            return (product.quantity = cart.quantity);
         });
       }
       console.log("oi sou o cart ", carrinho);
@@ -110,7 +110,7 @@ export async function updatedCart(req, res) {
         {
           _id: new ObjectId(user._id),
         },
-        { $set: { cart: cart } }
+        { $set: { cart: carrinho } }
       );
       return res.sendStatus(200);
     } else {
