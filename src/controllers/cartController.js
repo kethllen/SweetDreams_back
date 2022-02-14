@@ -90,14 +90,25 @@ export async function updatedCart(req, res) {
   try {
     const products = req.body;
     const { user } = res.locals;
-    let productsUpdate = products.filter((product) => {
-      if (product.quantity !== 0 || product.quantity !== "0") return product;
-    });
+    console.log(products);
+    let cart = [];
+    const userCart = await db.collection("cart").findOne({ id_user: user._id });
+    if (products.cart.quantity == 0 || products.cart.quantity == "0") {
+      cart = userCart.cart.filter((product) => {
+        if (product.productId !== new ObjectId(product.cart.productId))
+          return product;
+      });
+    } else {
+      cart = userCart.cart.map((product) => {
+        if (product.productId == new ObjectId(products.cart.productId))
+          return (product.quantity = products.cart.quantity);
+      });
+    }
     await db.collection("cart").updateOne(
       {
         _id: new ObjectId(user._id),
       },
-      { $set: productsUpdate }
+      { $set: cart }
     );
     res.sendStatus(200);
   } catch (error) {
