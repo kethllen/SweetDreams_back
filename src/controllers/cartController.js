@@ -109,7 +109,7 @@ export async function updatedCart(req, res) {
         {
           _id: new ObjectId(user._id),
         },
-        { $set: cart }
+        { $set: { cart: cart } }
       );
       return res.sendStatus(200);
     } else {
