@@ -7,7 +7,11 @@ export async function postOrder(req, res) {
         const userCart = await db.collection("cart").findOne({ id_user: user._id });
         await db.collection("orders").insertOne({ id_user: user._id, ...userInfo, cart: userCart.cart });
 
-        await db.collection("cart").deleteOne({ id_user: user._id });
+        await db.collection("cart").updateOne({ id_user: user._id }, {
+            $set: {
+                'cart': []
+            }
+        });
 
         res.sendStatus(201);
     } catch (error) {
