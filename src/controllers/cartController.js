@@ -82,15 +82,21 @@ export async function deleteCollection(req, res) {
 }
 
 export async function updatedCart(req, res) {
-  const products = req.body;
-  const { user } = res.locals;
-  let productsUpdate = products.filter((product) => {
-    if (product.quantity !== 0 || product.quantity !== "0") return product;
-  });
-  await db.collection("cart").updateOne(
-    {
-      _id: user._id,
-    },
-    { $set: productsUpdate }
-  );
+  try {
+    const products = req.body;
+    const { user } = res.locals;
+    let productsUpdate = products.filter((product) => {
+      if (product.quantity !== 0 || product.quantity !== "0") return product;
+    });
+    await db.collection("cart").updateOne(
+      {
+        _id: user._id,
+      },
+      { $set: productsUpdate }
+    );
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 }
