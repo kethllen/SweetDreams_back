@@ -62,19 +62,21 @@ export async function getCart(req, res) {
       for (let product of userCart.cart) {
         const info = await db
           .collection("products")
-          .findOne({ _id: product.productId });
+          .findOne({ _id: new ObjectId(product.productId) });
         console.log(info);
-        const aux = info.price.replace(",", ".");
-        console.log("to aqui agora");
-        productsInfo.push({
-          productId: info._id,
-          name: info.name,
-          image: info.image,
-          price: info.price,
-          quantity: product.quantity,
-          subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(2),
-        });
-        console.log("cheguei ao fim");
+        if (info) {
+          const aux = info.price.replace(",", ".");
+          console.log("to aqui agora");
+          productsInfo.push({
+            productId: info._id,
+            name: info.name,
+            image: info.image,
+            price: info.price,
+            quantity: product.quantity,
+            subtotal: (parseInt(product.quantity) * parseFloat(aux)).toFixed(2),
+          });
+          console.log("cheguei ao fim");
+        }
       }
     }
     return res.status(200).send(productsInfo);
