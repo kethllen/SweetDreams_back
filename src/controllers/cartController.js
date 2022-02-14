@@ -6,10 +6,15 @@ export async function postItemOnCart(req, res) {
     const productId = req.body.productId;
 
     const { user } = res.locals;
-    const userCart = await db
+    let userCart = await db
       .collection("cart")
       .findOne({ id_user: new ObjectId(user._id) });
-
+    if (!userCart) {
+      await db.collection("cart").insertOne({ id_user: user._id, cart: [] });
+      userCart = await db
+        .collection("cart")
+        .findOne({ id_user: new ObjectId(user._id) });
+    }
     let alreadyOnCart = false;
     for (let i = 0; i < userCart.cart.length; i++) {
       if (userCart.cart[i].productId === productId) {
@@ -40,8 +45,7 @@ export async function postItemOnCart(req, res) {
     const updatedCart = await db
       .collection("cart")
       .findOne({ id_user: new ObjectId(user._id) });
-
-    res.status(201).send(updatedCart);
+    return res.status(201).send(updatedCart);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
