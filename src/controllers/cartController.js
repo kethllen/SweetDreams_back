@@ -91,7 +91,12 @@ export async function updatedCart(req, res) {
     const products = req.body;
     const { user } = res.locals;
     console.log(products);
-    let cart = [];
+    let cart = [
+      {
+        productId,
+        quantity,
+      },
+    ];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
     if (userCart) {
       if (products.cart.quantity == 0 || products.cart.quantity == "0") {
@@ -105,7 +110,7 @@ export async function updatedCart(req, res) {
             return (product.quantity = products.cart.quantity);
         });
       }
-      console.log(cart);
+      console.log("oi sou o cart ", cart);
       await db.collection("cart").updateOne(
         {
           _id: new ObjectId(user._id),
