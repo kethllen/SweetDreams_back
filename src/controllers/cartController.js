@@ -93,7 +93,8 @@ export async function updatedCart(req, res) {
     console.log(products);
     let carrinho = [{}];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
-    if (userCart?.cart?.length !== 0) {
+    if (userCart) {
+      console.log("eu sou o carrinho atual ", userCart.cart);
       if (cart.quantity == 0 || cart.quantity == "0") {
         carrinho = userCart.cart.filter((product) => {
           if (product.productId !== new ObjectId(cart.productId))
@@ -114,7 +115,7 @@ export async function updatedCart(req, res) {
       );
       return res.sendStatus(200);
     } else {
-      res.sendStatus(423).send({ message: "carrinho nao encontrado" });
+      return res.sendStatus(423).send({ message: "carrinho nao encontrado" });
     }
   } catch (error) {
     console.log(error);
