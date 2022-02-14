@@ -90,7 +90,7 @@ export async function updatedCart(req, res) {
   try {
     const { cart } = req.body;
     const { user } = res.locals;
-    console.log(products);
+    console.log(cart);
     let carrinho = [{}];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
     if (userCart) {
