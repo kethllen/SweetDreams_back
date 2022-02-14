@@ -105,6 +105,7 @@ export async function updatedCart(req, res) {
             return (product.quantity = products.cart.quantity);
         });
       }
+      console.log(cart);
       await db.collection("cart").updateOne(
         {
           _id: new ObjectId(user._id),
