@@ -96,9 +96,9 @@ export async function updatedCart(req, res) {
   try {
     const { cart } = req.body;
     const { user } = res.locals;
-    console.log(cart);
     let carrinho = [{}];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
+    console.log(userCart);
     if (userCart) {
       console.log("eu sou o carrinho atual ", userCart.cart);
       if (cart.quantity == 0 || cart.quantity == "0") {
