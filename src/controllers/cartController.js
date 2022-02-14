@@ -91,28 +91,26 @@ export async function updatedCart(req, res) {
     const { cart } = req.body;
     const { user } = res.locals;
     console.log(cart);
-    let carrinho = [{}];
     const userCart = await db.collection("cart").findOne({ id_user: user._id });
     if (userCart) {
       console.log("eu sou o carrinho atual ", userCart.cart);
       if (cart.quantity == 0 || cart.quantity == "0") {
-        carrinho = userCart.cart.filter((product) => {
-          if (product.productId !== new ObjectId(cart.productId))
-            return product;
+        await db.collection("cart").deleteOne({
+          id_user: new ObjectId(user._id),
+          "cart.productId": cart.productId,
         });
       } else {
-        carrinho = userCart.cart.map((product) => {
-          if (product.productId == new ObjectId(cart.productId))
-            return (product.quantity = cart.quantity);
-        });
+        await db.collection("cart").updateOne(
+          {
+            id_user: new ObjectId(user._id),
+            "cart.productId": cart.productId,
+          },
+          {
+            $set: { "cart.$.quantity": cart.quantity },
+          }
+        );
       }
-      console.log("oi sou o cart ", carrinho);
-      await db.collection("cart").updateOne(
-        {
-          _id: new ObjectId(user._id),
-        },
-        { $set: { cart: carrinho } }
-      );
+
       return res.sendStatus(200);
     } else {
       return res.sendStatus(423).send({ message: "carrinho nao encontrado" });
