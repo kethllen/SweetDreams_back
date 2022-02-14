@@ -100,6 +100,7 @@ export async function updatedCart(req, res) {
         const items = userCart.cart;
         for (let item of items) {
           if (item.productId !== new ObjectId(cart.productId)) {
+            console.log(item);
             carrinho.push(item);
           }
         }
