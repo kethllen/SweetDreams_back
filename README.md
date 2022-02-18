@@ -52,5 +52,5 @@ PORT=5000
 ```bash
 npm start or node app.js
 ```
-5. Clone the front-end repository at https://github.com/kethllen/MyWallet_Fronf
-6. Follow instructions to run back-end at https://github.com/kethllen/MyWallet_Fronf
+5. Clone the front-end repository at https://github.com/kethllen/SweetDreams_front
+6. Follow instructions to run back-end at https://github.com/kethllen/SweetDreams_front
