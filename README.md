@@ -5,7 +5,8 @@ The SweetDreams is an e-commerce app for sweets, with it you can order your favo
 <img src="src/assets/sweetDremas-usage.gif" />
 
 API available at https://sweet-dreams-api.herokuapp.com/
-Try it out now at https://my-wallet-fronf.vercel.app/
+
+Try it out now at https://sweet-dreams-front.vercel.app/
 
 ## About
 
