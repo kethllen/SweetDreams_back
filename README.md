@@ -2,7 +2,7 @@
 
 The SweetDreams is an e-commerce app for sweets, with it you can order your favorite sweets, make the payment and receive them at your home in just a few clicks!
 
-<img src="src/assets/sweetDremas-usage.gif" />
+<img src="src/assets/sweetDreams-usage.gif" />
 
 API available at https://sweet-dreams-api.herokuapp.com/
 
